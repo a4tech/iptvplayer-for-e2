@@ -38,7 +38,7 @@ class IPTVSetupImpl:
         self.ffmpegVersion = ""
         self.gstreamerVersion = ""
         self.openSSLVersion = ""
-        self.supportedPlatforms = ["sh4", "mipsel", "i686"]
+        self.supportedPlatforms = ["sh4", "mipsel", "i686", "armv7"]
         self.platform = "unknown"
         
         # wget members
@@ -78,7 +78,7 @@ class IPTVSetupImpl:
                                           (_('Install into the "%s".') % "IPTVPlayer/bin/gstplayer", GetBinDir("gstplayer", "")),
                                           (_("Do not install (not recommended)"), "")]
         # exteplayer3
-        self.exteplayer3Version = {'sh4': 9, 'mipsel': 11}
+        self.exteplayer3Version = {'sh4': 9, 'mipsel': 11, 'armv7': 11}
         self.exteplayer3paths = ["/usr/bin/exteplayer3", GetBinDir("exteplayer3", "")]
         self._exteplayer3InstallChoiseList = [(_('Install into the "%s".') % ("/usr/bin/exteplayer3 (%s)" % _("recommended")), "/usr/bin/exteplayer3"),
                                           (_('Install into the "%s".') % "IPTVPlayer/bin/exteplayer3", GetBinDir("exteplayer3", "")),
@@ -136,7 +136,7 @@ class IPTVSetupImpl:
     ###################################################
     def platformDetect(self):
         printDBG("IPTVSetupImpl.platformDetect")
-        self.setInfo(_("Detection of the platform."), _("Plugin can be run on one of the following platforms: sh4, mipsel, i686."))
+        self.setInfo(_("Detection of the platform."), _("Plugin can be run on one of the following platforms: sh4, mipsel, i686, armv7."))
         cmdTabs = []
         for platform in self.supportedPlatforms:
             platformtesterPath = resolveFilename(SCOPE_PLUGINS, "Extensions/IPTVPlayer/bin/%s/platformtester" % platform)
@@ -403,7 +403,7 @@ class IPTVSetupImpl:
         printDBG("IPTVSetupImpl.f4mdumpStepFinished sts[%r]" % sts)
         if self.platform in ['sh4'] and self.ffmpegVersion in ['1.0', '1.1.1', '1.2', '1.2.1', '2.0.3', '2.0.2', '2.2.1', '2.5', '2.6.2', '2.7.1']: 
             self.exteplayer3Step()
-        elif self.platform in ['mipsel'] and self.ffmpegVersion in ['2.8', '2.8.1']: 
+        elif self.platform in ['mipsel', 'armv7'] and self.ffmpegVersion in ['2.8', '2.8.1']: 
             self.exteplayer3Step()
         elif "" != self.gstreamerVersion: self.gstplayerStep()
         else: self.finish()

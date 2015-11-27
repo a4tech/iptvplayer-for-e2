@@ -47,7 +47,7 @@ def GetNice(pid=None):
     return nice
     
 def E2PrioFix(cmd):
-    if 'mipsel' == config.plugins.iptvplayer.plarform.value:
+    if config.plugins.iptvplayer.plarform.value in ('mipsel', 'armv7'):
         return 'nice -n %d %s' % (GetNice()+2, cmd)
     else:
         return cmd

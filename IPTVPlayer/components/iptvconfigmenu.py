@@ -46,7 +46,7 @@ config.plugins.iptvplayer.f4mdumppath     = ConfigText(default = "", fixed_size 
 config.plugins.iptvplayer.uchardetpath    = ConfigText(default = "", fixed_size = False)
 config.plugins.iptvplayer.set_curr_title  = ConfigYesNo(default = False)
 config.plugins.iptvplayer.curr_title_file = ConfigText(default = "", fixed_size = False) 
-config.plugins.iptvplayer.plarform        = ConfigSelection(default = "auto", choices = [("auto", "auto"),("mipsel", _("mipsel")),("sh4", _("sh4")),("i686", _("i686")),("unknown", _("unknown"))])
+config.plugins.iptvplayer.plarform        = ConfigSelection(default = "auto", choices = [("auto", "auto"),("mipsel", _("mipsel")),("sh4", _("sh4")),("i686", _("i686")), ,("armv7", _("armv7"))("unknown", _("unknown"))])
 
 config.plugins.iptvplayer.showcover          = ConfigYesNo(default = True)
 config.plugins.iptvplayer.deleteIcons        = ConfigSelection(default = "3", choices = [("0", _("after closing")),("1", _("after day")),("3", _("after three days")),("7", _("after a week"))]) 
@@ -94,6 +94,9 @@ config.plugins.iptvplayer.defaultI686MoviePlayer0        = ConfigSelection(defau
 config.plugins.iptvplayer.alternativeI686MoviePlayer0    = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer')])
 # end without buffering mode players
 
+#armv7
+config.plugins.iptvplayer.defaultARMV7MoviePlayer0      = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer'),ConfigPlayer('exteplayer')])
+config.plugins.iptvplayer.alternativeARMV7MoviePlayer0  = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer'),ConfigPlayer('exteplayer')])
 
 # with buffering mode
 #sh4
@@ -107,6 +110,10 @@ config.plugins.iptvplayer.alternativeMIPSELMoviePlayer  = ConfigSelection(defaul
 #i686
 config.plugins.iptvplayer.defaultI686MoviePlayer        = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer')])
 config.plugins.iptvplayer.alternativeI686MoviePlayer    = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer')])
+
+#armv7
+config.plugins.iptvplayer.defaultARMV7MoviePlayer      = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer'),ConfigPlayer('exteplayer')])
+config.plugins.iptvplayer.alternativeARMV7MoviePlayer  = ConfigSelection(default = "auto", choices = [ConfigPlayer("auto"),ConfigPlayer("mini"),ConfigPlayer("standard"),ConfigPlayer('extgstplayer'),ConfigPlayer('exteplayer')])
 # end with buffering mode players
 
 config.plugins.iptvplayer.SciezkaCache = ConfigDirectory(default = "/hdd/IPTVCache/") #, fixed_size = False)
@@ -307,6 +314,17 @@ class ConfigMenu(ConfigBaseWidget):
             players.append(config.plugins.iptvplayer.defaultI686MoviePlayer)
             list.append(getConfigListEntry(_("Second move player in buffering mode"), config.plugins.iptvplayer.alternativeI686MoviePlayer))
             players.append(config.plugins.iptvplayer.alternativeI686MoviePlayer)
+
+        elif 'armv7' == config.plugins.iptvplayer.plarform.value:
+            list.append(getConfigListEntry(_("First move player without buffering mode"), config.plugins.iptvplayer.defaultARMV7MoviePlayer0))
+            players.append(config.plugins.iptvplayer.defaultARMV7MoviePlayer0)
+            list.append(getConfigListEntry(_("Second move player without buffering mode"), config.plugins.iptvplayer.alternativeARMV7MoviePlayer0))
+            players.append(config.plugins.iptvplayer.alternativeARMV7MoviePlayer0)
+            
+            list.append(getConfigListEntry(_("First move player in buffering mode"), config.plugins.iptvplayer.defaultARMV7MoviePlayer))
+            players.append(config.plugins.iptvplayer.defaultARMV7MoviePlayer)
+            list.append(getConfigListEntry(_("Second move player in buffering mode"), config.plugins.iptvplayer.alternativeARMV7MoviePlayer))
+            players.append(config.plugins.iptvplayer.alternativeARMV7MoviePlayer)
             
         else: 
             list.append(getConfigListEntry(_("Movie player"), config.plugins.iptvplayer.NaszPlayer))
@@ -404,6 +422,11 @@ class ConfigMenu(ConfigBaseWidget):
             players.append(config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0)
             players.append(config.plugins.iptvplayer.defaultMIPSELMoviePlayer)
             players.append(config.plugins.iptvplayer.alternativeMIPSELMoviePlayer)
+        elif 'armv7' == config.plugins.iptvplayer.plarform.value:
+            players.append(config.plugins.iptvplayer.defaultARMV7MoviePlayer0)
+            players.append(config.plugins.iptvplayer.alternativeARMV7MoviePlayer0)
+            players.append(config.plugins.iptvplayer.defaultARMV7MoviePlayer)
+            players.append(config.plugins.iptvplayer.alternativeARMV7MoviePlayer)
         elif 'i686' == config.plugins.iptvplayer.plarform.value:
             players.append(config.plugins.iptvplayer.defaultI686MoviePlayer0)
             players.append(config.plugins.iptvplayer.alternativeI686MoviePlayer0)
@@ -479,6 +502,14 @@ def GetMoviePlayer(buffering=False, useAlternativePlayer=False):
         else:
             player = config.plugins.iptvplayer.defaultMIPSELMoviePlayer0
             alternativePlayer = config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0
+
+    elif 'armv7' == config.plugins.iptvplayer.plarform.value:
+        if buffering:
+            player = config.plugins.iptvplayer.defaultARMV7MoviePlayer
+            alternativePlayer = config.plugins.iptvplayer.alternativeARMV7MoviePlayer
+        else:
+            player = config.plugins.iptvplayer.defaultARMV7MoviePlayer0
+            alternativePlayer = config.plugins.iptvplayer.alternativeARMV7MoviePlayer0
 
     elif 'i686' == config.plugins.iptvplayer.plarform.value:
         if buffering:
